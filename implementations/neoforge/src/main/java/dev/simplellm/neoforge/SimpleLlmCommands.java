@@ -36,6 +36,17 @@ final class SimpleLlmCommands {
 			)
 		);
 
+		root.then(Commands.literal("name")
+			.then(Commands.argument("value", StringArgumentType.string())
+				.executes(ctx -> {
+					String v = StringArgumentType.getString(ctx, "value");
+					SimpleLlmRuntime.setAiName(v);
+					ctx.getSource().sendSuccess(() -> net.minecraft.network.chat.Component.literal("AI name set to: " + v), true);
+					return Command.SINGLE_SUCCESS;
+				})
+			)
+		);
+
 		event.getDispatcher().register(root);
 	}
 }

@@ -5,11 +5,13 @@ public class LlmConfig {
 	public static final String DEFAULT_SYSTEM_PROMPT = "You are a helpful Minecraft server assistant. Use tools when needed.";
 	public static final int DEFAULT_CONTEXT_WINDOW = 50;
 	public static final int DEFAULT_MEMORY_WINDOW = 10;
+	public static final String DEFAULT_AI_NAME = "AI";
 
 	private String trigger = DEFAULT_TRIGGER;
 	private String systemPrompt = DEFAULT_SYSTEM_PROMPT;
 	private int contextWindow = DEFAULT_CONTEXT_WINDOW;
 	private int memoryWindow = DEFAULT_MEMORY_WINDOW;
+	private String aiName = DEFAULT_AI_NAME;
 	
 	// LLM Provider settings
 	private String provider = "openai"; // openai, mock, etc.
@@ -50,4 +52,7 @@ public class LlmConfig {
 
 	public String getTavilyApiKey() { return tavilyApiKey; }
 	public void setTavilyApiKey(String tavilyApiKey) { this.tavilyApiKey = tavilyApiKey; }
+
+	public String getAiName() { return aiName; }
+	public void setAiName(String aiName) { this.aiName = aiName; }
 }

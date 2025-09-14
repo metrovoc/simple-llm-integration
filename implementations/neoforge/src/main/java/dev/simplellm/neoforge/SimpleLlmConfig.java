@@ -12,6 +12,7 @@ public class SimpleLlmConfig {
 	public static final ModConfigSpec.ConfigValue<String> SYSTEM_PROMPT;
 	public static final ModConfigSpec.IntValue CONTEXT_WINDOW;
 	public static final ModConfigSpec.IntValue MEMORY_WINDOW;
+	public static final ModConfigSpec.ConfigValue<String> AI_NAME;
 	
 	public static final ModConfigSpec.ConfigValue<String> PROVIDER;
 	public static final ModConfigSpec.ConfigValue<String> API_KEY;
@@ -41,6 +42,10 @@ public class SimpleLlmConfig {
 		MEMORY_WINDOW = builder
 			.comment("Number of messages to keep in LLM memory")
 			.defineInRange("memoryWindow", LlmConfig.DEFAULT_MEMORY_WINDOW, 1, 50);
+			
+		AI_NAME = builder
+			.comment("Display name for the AI in chat messages")
+			.define("aiName", LlmConfig.DEFAULT_AI_NAME);
 		
 		builder.comment("LLM Provider Settings").push("provider");
 		
@@ -93,6 +98,7 @@ public class SimpleLlmConfig {
 		config.setBaseUrl(BASE_URL.get());
 		config.setEnableWebSearch(ENABLE_WEB_SEARCH.get());
 		config.setTavilyApiKey(TAVILY_API_KEY.get());
+		config.setAiName(AI_NAME.get());
 		return config;
 	}
 }
