@@ -10,12 +10,12 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod("simple-llm")
+@Mod("simplellm")
 public class SimpleLlmMod {
-	public static final Logger LOGGER = LogManager.getLogger("simple-llm");
+	public static final Logger LOGGER = LogManager.getLogger("simplellm");
 
 	public SimpleLlmMod(IEventBus modEventBus, ModContainer container) {
-		LOGGER.info("simple-llm mod initializing");
+		LOGGER.info("simplellm mod initializing");
 		
 		// Register config
 		SimpleLlmConfig.register(container);
@@ -27,17 +27,17 @@ public class SimpleLlmMod {
 	}
 	
 	private void onCommonSetup(FMLCommonSetupEvent event) {
-		LOGGER.info("simple-llm common setup");
+		LOGGER.info("simplellm common setup");
 		initializeLlmService();
 	}
 	
 	private void onConfigLoad(ModConfigEvent.Loading event) {
-		LOGGER.info("simple-llm config loaded");
+		LOGGER.info("simplellm config loaded");
 		initializeLlmService();
 	}
 	
 	private void onConfigReload(ModConfigEvent.Reloading event) {
-		LOGGER.info("simple-llm config reloaded");
+		LOGGER.info("simplellm config reloaded");
 		initializeLlmService();
 	}
 	

@@ -6,7 +6,7 @@ pluginManagement {
 	}
 }
 
-rootProject.name = 'simple-llm'
+rootProject.name = 'simplellm'
 
 include 'common'
 include 'implementations:neoforge'

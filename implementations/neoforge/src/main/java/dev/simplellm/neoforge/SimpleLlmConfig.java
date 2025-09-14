@@ -24,7 +24,7 @@ public class SimpleLlmConfig {
 	static {
 		ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 		
-		builder.comment("Simple LLM Integration Configuration").push("simple-llm");
+		builder.comment("Simple LLM Integration Configuration").push("simplellm");
 		
 		TRIGGER = builder
 			.comment("Trigger phrase to activate LLM (default: @ui)")

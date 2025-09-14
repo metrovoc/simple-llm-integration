@@ -49,7 +49,7 @@ final class SimpleLlmRuntime {
 	static void handleTriggeredMessage(ServerPlayer sender, String content) {
 		LlmService llm = service.get();
 		if (llm == null) {
-			 sender.sendSystemMessage(Component.literal("[simple-llm] LLM not configured"));
+			 sender.sendSystemMessage(Component.literal("[simplellm] LLM not configured"));
 			return;
 		}
 		recordPlayer(sender.getGameProfile().getName(), content);
@@ -59,7 +59,7 @@ final class SimpleLlmRuntime {
 			server.execute(() -> {
 				if (err != null) {
 					SimpleLlmMod.LOGGER.error("LLM error", err);
-					sender.sendSystemMessage(Component.literal("[simple-llm] Error: " + err.getMessage()));
+					sender.sendSystemMessage(Component.literal("[simplellm] Error: " + err.getMessage()));
 					return;
 				}
 				String text = resp == null ? "" : resp.trim();

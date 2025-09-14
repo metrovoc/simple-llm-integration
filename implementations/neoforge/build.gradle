@@ -13,7 +13,7 @@ java {
 ext {
 	minecraft_version = '1.21.1'
 	neo_version = '21.1.203'
-	mod_id = 'simple-llm'
+	mod_id = 'simplellm'
 }
 
 dependencies {
@@ -21,13 +21,20 @@ dependencies {
 	implementation "net.neoforged:neoforge:${neo_version}"
 	
 	// Include LangChain4j and common module in the final jar
-	jarJar(project(':common')) {
-		jarJar.enable()
-	}
-	jarJar('dev.langchain4j:langchain4j:1.1.0') {
-		jarJar.enable()
-	}
+	jarJar(project(':common'))
+	jarJar('dev.langchain4j:langchain4j:1.1.0')
+	jarJar('dev.langchain4j:langchain4j-core:1.1.0')
+	jarJar('dev.langchain4j:langchain4j-open-ai:1.1.0')
+	jarJar('dev.langchain4j:langchain4j-http-client:1.1.0')
+	jarJar('dev.langchain4j:langchain4j-http-client-jdk:1.1.0')
+	jarJar('com.fasterxml.jackson.core:jackson-annotations:2.19.0')
+	jarJar('com.fasterxml.jackson.core:jackson-core:2.19.0')
+	jarJar('com.fasterxml.jackson.core:jackson-databind:2.19.0')
+	jarJar('com.knuddels:jtokkit:1.1.0')
 }
+
+// Enable the Jar-in-Jar system for your mod
+jarJar.enable()
 
 minecraft {
 	// Configure mappings/providers here if needed
@@ -35,17 +42,21 @@ minecraft {
 
 // Configure jar with proper naming
 jar {
-	archiveBaseName = 'simple-llm'
+	archiveBaseName = 'simplellm'
 	archiveVersion = '0.1.0'
 }
 
 // Add a task to rename the jarJar output to the main name
-task renameJarJar {
+tasks.register('renameJarJar') {
 	dependsOn tasks.named('jarJar')
+	def outputDir = layout.buildDirectory.dir("libs")
+	inputs.dir(outputDir)
+	outputs.file(outputDir.map { it.file('simplellm-0.1.0.jar') })
+	
 	doLast {
-		def libsDir = file("$buildDir/libs")
+		def libsDir = outputDir.get().asFile
 		def allJar = libsDir.listFiles().find { it.name.endsWith('-all.jar') }
-		def plainJar = new File(libsDir, 'simple-llm-0.1.0.jar')
+		def plainJar = new File(libsDir, 'simplellm-0.1.0.jar')
 		
 		if (plainJar.exists()) {
 			plainJar.delete()
@@ -57,7 +68,9 @@ task renameJarJar {
 }
 
 // Make build depend on renaming
-build.dependsOn renameJarJar
+tasks.named('build').configure {
+	dependsOn tasks.named('renameJarJar')
+}
 
 runs {
 	client {
