@@ -61,7 +61,7 @@ final class SimpleLlmRuntime {
 			 sender.sendSystemMessage(Component.literal("[simplellm] LLM not configured"));
 			return;
 		}
-		recordPlayer(sender.getGameProfile().getName(), content);
+		// Don't record the message again - it was already recorded in the event handler
 		String callerInfo = "player=" + sender.getGameProfile().getName() + ", dim=" + sender.level().dimension().location();
 		llm.respond(getSystemPrompt(), snapshot(), content, callerInfo).whenComplete((resp, err) -> {
 			MinecraftServer server = sender.server;

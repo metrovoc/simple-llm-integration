@@ -9,6 +9,9 @@ import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.simplellm.common.api.ChatEvent;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,10 +34,20 @@ public class LangChain4jLlmService implements LlmService {
 	private String doRespond(String systemPrompt, List<ChatEvent> context, String userMessage, String callerInfo) {
 		StringBuilder ctx = new StringBuilder();
 		ctx.append("System: ").append(systemPrompt).append("\n\n");
-		ctx.append("Context Window (most recent first):\n");
+		ctx.append("Context Window (chronological order, oldest to newest):\n");
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm:ss")
+			.withZone(ZoneId.systemDefault());
+		
 		for (ChatEvent e : context) {
+			// Format timestamp
+			String timestamp = formatter.format(Instant.ofEpochMilli(e.getTimestampMillis()));
+			
+			ctx.append("[").append(timestamp).append("] ");
 			ctx.append("[" + e.getKind() + "]");
-			if (e.getSender() != null && !e.getSender().isEmpty()) ctx.append("(" + e.getSender() + ")");
+			if (e.getSender() != null && !e.getSender().isEmpty()) {
+				ctx.append("(" + e.getSender() + ")");
+			}
 			ctx.append(": ").append(e.getContent()).append('\n');
 		}
 		ctx.append("Caller: ").append(callerInfo);
