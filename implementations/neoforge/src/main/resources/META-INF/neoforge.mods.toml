@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="MIT"
+
+[[mods]]
+modId="simple-llm"
+version="0.1.0"
+displayName="Simple LLM"
+credits=""
+authors=""
+description='''
+Simple LLM integration for Minecraft using LangChain4j.
+'''
+
+[[dependencies.simple-llm]]
+modId="neoforge"
+mandatory=true
+versionRange="[21.1.203,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.simple-llm]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.21.1,)"
+ordering="NONE"
+side="BOTH"

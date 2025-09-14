@@ -1,0 +1,53 @@
+package dev.simplellm.neoforge;
+
+import dev.simplellm.common.core.LlmServiceFactory;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+@Mod("simple-llm")
+public class SimpleLlmMod {
+	public static final Logger LOGGER = LogManager.getLogger("simple-llm");
+
+	public SimpleLlmMod(IEventBus modEventBus, ModContainer container) {
+		LOGGER.info("simple-llm mod initializing");
+		
+		// Register config
+		SimpleLlmConfig.register();
+		
+		// Listen to mod bus events
+		modEventBus.addListener(this::onCommonSetup);
+		modEventBus.addListener(this::onConfigLoad);
+		modEventBus.addListener(this::onConfigReload);
+	}
+	
+	private void onCommonSetup(FMLCommonSetupEvent event) {
+		LOGGER.info("simple-llm common setup");
+		initializeLlmService();
+	}
+	
+	private void onConfigLoad(ModConfigEvent.Loading event) {
+		LOGGER.info("simple-llm config loaded");
+		initializeLlmService();
+	}
+	
+	private void onConfigReload(ModConfigEvent.Reloading event) {
+		LOGGER.info("simple-llm config reloaded");
+		initializeLlmService();
+	}
+	
+	private void initializeLlmService() {
+		try {
+			SimpleLlmRuntime.setService(LlmServiceFactory.create(SimpleLlmConfig.toLlmConfig()));
+			SimpleLlmRuntime.updateFromConfig(SimpleLlmConfig.toLlmConfig());
+			LOGGER.info("LLM service initialized with provider: {}", SimpleLlmConfig.PROVIDER.get());
+		} catch (Exception e) {
+			LOGGER.error("Failed to initialize LLM service", e);
+		}
+	}
+}
