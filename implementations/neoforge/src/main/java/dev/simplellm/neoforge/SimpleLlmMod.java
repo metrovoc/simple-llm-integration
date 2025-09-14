@@ -18,7 +18,7 @@ public class SimpleLlmMod {
 		LOGGER.info("simple-llm mod initializing");
 		
 		// Register config
-		SimpleLlmConfig.register();
+		SimpleLlmConfig.register(container);
 		
 		// Listen to mod bus events
 		modEventBus.addListener(this::onCommonSetup);

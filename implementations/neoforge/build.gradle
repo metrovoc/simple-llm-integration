@@ -19,11 +19,45 @@ ext {
 dependencies {
 	implementation project(':common')
 	implementation "net.neoforged:neoforge:${neo_version}"
+	
+	// Include LangChain4j and common module in the final jar
+	jarJar(project(':common')) {
+		jarJar.enable()
+	}
+	jarJar('dev.langchain4j:langchain4j:1.1.0') {
+		jarJar.enable()
+	}
 }
 
 minecraft {
 	// Configure mappings/providers here if needed
 }
+
+// Configure jar with proper naming
+jar {
+	archiveBaseName = 'simple-llm'
+	archiveVersion = '0.1.0'
+}
+
+// Add a task to rename the jarJar output to the main name
+task renameJarJar {
+	dependsOn tasks.named('jarJar')
+	doLast {
+		def libsDir = file("$buildDir/libs")
+		def allJar = libsDir.listFiles().find { it.name.endsWith('-all.jar') }
+		def plainJar = new File(libsDir, 'simple-llm-0.1.0.jar')
+		
+		if (plainJar.exists()) {
+			plainJar.delete()
+		}
+		if (allJar) {
+			allJar.renameTo(plainJar)
+		}
+	}
+}
+
+// Make build depend on renaming
+build.dependsOn renameJarJar
 
 runs {
 	client {
